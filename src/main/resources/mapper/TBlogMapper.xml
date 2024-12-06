@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fit.dao.TBlogDao">
+  <resultMap id="BaseResultMap" type="com.fit.entity.TBlog">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="summary" jdbcType="VARCHAR" property="summary" />
+    <result column="releaseDate" jdbcType="TIMESTAMP" property="releasedate" />
+    <result column="clickHit" jdbcType="INTEGER" property="clickhit" />
+    <result column="replyHit" jdbcType="INTEGER" property="replyhit" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="contentNoTag" jdbcType="VARCHAR" property="contentnotag" />
+    <result column="blogCount" jdbcType="INTEGER" property="blogcount" />
+    <result column="releaseDateStr" jdbcType="VARCHAR" property="releasedatestr" />
+    <result column="typeId" jdbcType="INTEGER" property="typeid" />
+    <result column="keyWord" jdbcType="VARCHAR" property="keyword" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, summary, releaseDate, clickHit, replyHit, content, contentNoTag, blogCount, 
+    releaseDateStr, typeId, keyWord
+  </sql>
+  <select id="getById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_blog
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from t_blog
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="save" keyProperty="id" parameterType="com.fit.entity.TBlog" useGeneratedKeys="true">
+    insert into t_blog
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="summary != null">
+        summary,
+      </if>
+      <if test="releasedate != null">
+        releaseDate,
+      </if>
+      <if test="clickhit != null">
+        clickHit,
+      </if>
+      <if test="replyhit != null">
+        replyHit,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="contentnotag != null">
+        contentNoTag,
+      </if>
+      <if test="blogcount != null">
+        blogCount,
+      </if>
+      <if test="releasedatestr != null">
+        releaseDateStr,
+      </if>
+      <if test="typeid != null">
+        typeId,
+      </if>
+      <if test="keyword != null">
+        keyWord,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null">
+        #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="releasedate != null">
+        #{releasedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clickhit != null">
+        #{clickhit,jdbcType=INTEGER},
+      </if>
+      <if test="replyhit != null">
+        #{replyhit,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="contentnotag != null">
+        #{contentnotag,jdbcType=VARCHAR},
+      </if>
+      <if test="blogcount != null">
+        #{blogcount,jdbcType=INTEGER},
+      </if>
+      <if test="releasedatestr != null">
+        #{releasedatestr,jdbcType=VARCHAR},
+      </if>
+      <if test="typeid != null">
+        #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="keyword != null">
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.fit.entity.TBlog">
+    update t_blog
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null">
+        summary = #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="releasedate != null">
+        releaseDate = #{releasedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clickhit != null">
+        clickHit = #{clickhit,jdbcType=INTEGER},
+      </if>
+      <if test="replyhit != null">
+        replyHit = #{replyhit,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="contentnotag != null">
+        contentNoTag = #{contentnotag,jdbcType=VARCHAR},
+      </if>
+      <if test="blogcount != null">
+        blogCount = #{blogcount,jdbcType=INTEGER},
+      </if>
+      <if test="releasedatestr != null">
+        releaseDateStr = #{releasedatestr,jdbcType=VARCHAR},
+      </if>
+      <if test="typeid != null">
+        typeId = #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="keyword != null">
+        keyWord = #{keyword,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <sql id="Base_Where_List">
+    <where>
+      <if test="title != null and title != ''">
+         and title = #{title,jdbcType=VARCHAR}
+      </if>
+      <if test="summary != null and summary != ''">
+         and summary = #{summary,jdbcType=VARCHAR}
+      </if>
+      <if test="releasedate != null and releasedate != ''">
+         and releaseDate = #{releasedate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="clickhit != null and clickhit != ''">
+         and clickHit = #{clickhit,jdbcType=INTEGER}
+      </if>
+      <if test="replyhit != null and replyhit != ''">
+         and replyHit = #{replyhit,jdbcType=INTEGER}
+      </if>
+      <if test="content != null and content != ''">
+         and content = #{content,jdbcType=VARCHAR}
+      </if>
+      <if test="contentnotag != null and contentnotag != ''">
+         and contentNoTag = #{contentnotag,jdbcType=VARCHAR}
+      </if>
+      <if test="blogcount != null and blogcount != ''">
+         and blogCount = #{blogcount,jdbcType=INTEGER}
+      </if>
+      <if test="releasedatestr != null and releasedatestr != ''">
+         and releaseDateStr = #{releasedatestr,jdbcType=VARCHAR}
+      </if>
+      <if test="typeid != null and typeid != ''">
+         and typeId = #{typeid,jdbcType=INTEGER}
+      </if>
+      <if test="keyword != null and keyword != ''">
+         and keyWord = #{keyword,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </sql>
+  <select id="findList" parameterType="com.fit.entity.TBlog" resultMap="BaseResultMap">
+     select 
+    <include refid="Base_Column_List" />
+     from t_blog
+    <include refid="Base_Where_List" />
+    order by id desc 
+	<if test="offset != null and limit != null">
+	limit ${offset}, ${limit}
+	</if>
+  </select>
+  <select id="findCount" resultType="java.lang.Integer">
+    select count(1) from t_blog
+    <include refid="Base_Where_List" />
+  </select>
+  <select id="get" parameterType="java.util.Map" resultMap="BaseResultMap">
+     select 
+    <include refid="Base_Column_List" />
+     from t_blog
+     <include refid="Base_Where_List" />
+  </select>
+  <delete id="batchDelete">
+    delete from t_blog
+     where id in (
+     <foreach collection="array" item="id" separator=",">
+     #{id}
+     </foreach>
+    )
+  </delete>
+</mapper>

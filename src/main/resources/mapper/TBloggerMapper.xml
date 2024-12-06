@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fit.dao.TBloggerDao">
+  <resultMap id="BaseResultMap" type="com.fit.entity.TBlogger">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userName" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="profile" jdbcType="VARCHAR" property="profile" />
+    <result column="nickName" jdbcType="VARCHAR" property="nickname" />
+    <result column="sign" jdbcType="VARCHAR" property="sign" />
+    <result column="imageName" jdbcType="VARCHAR" property="imagename" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userName, `password`, profile, nickName, sign, imageName
+  </sql>
+  <select id="getById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_blogger
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from t_blogger
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="save" keyProperty="id" parameterType="com.fit.entity.TBlogger" useGeneratedKeys="true">
+    insert into t_blogger
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="username != null">
+        userName,
+      </if>
+      <if test="password != null">
+        `password`,
+      </if>
+      <if test="profile != null">
+        profile,
+      </if>
+      <if test="nickname != null">
+        nickName,
+      </if>
+      <if test="sign != null">
+        sign,
+      </if>
+      <if test="imagename != null">
+        imageName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="profile != null">
+        #{profile,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null">
+        #{sign,jdbcType=VARCHAR},
+      </if>
+      <if test="imagename != null">
+        #{imagename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.fit.entity.TBlogger">
+    update t_blogger
+    <set>
+      <if test="username != null">
+        userName = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        `password` = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="profile != null">
+        profile = #{profile,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        nickName = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null">
+        sign = #{sign,jdbcType=VARCHAR},
+      </if>
+      <if test="imagename != null">
+        imageName = #{imagename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <sql id="Base_Where_List">
+    <where>
+      <if test="username != null and username != ''">
+         and userName = #{username,jdbcType=VARCHAR}
+      </if>
+      <if test="password != null and password != ''">
+         and `password` = #{password,jdbcType=VARCHAR}
+      </if>
+      <if test="profile != null and profile != ''">
+         and profile = #{profile,jdbcType=VARCHAR}
+      </if>
+      <if test="nickname != null and nickname != ''">
+         and nickName = #{nickname,jdbcType=VARCHAR}
+      </if>
+      <if test="sign != null and sign != ''">
+         and sign = #{sign,jdbcType=VARCHAR}
+      </if>
+      <if test="imagename != null and imagename != ''">
+         and imageName = #{imagename,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </sql>
+  <select id="findList" parameterType="com.fit.entity.TBlogger" resultMap="BaseResultMap">
+     select 
+    <include refid="Base_Column_List" />
+     from t_blogger
+    <include refid="Base_Where_List" />
+    order by id desc 
+	<if test="offset != null and limit != null">
+	limit ${offset}, ${limit}
+	</if>
+  </select>
+  <select id="findCount" resultType="java.lang.Integer">
+    select count(1) from t_blogger
+    <include refid="Base_Where_List" />
+  </select>
+  <select id="get" parameterType="java.util.Map" resultMap="BaseResultMap">
+     select 
+    <include refid="Base_Column_List" />
+     from t_blogger
+     <include refid="Base_Where_List" />
+  </select>
+  <delete id="batchDelete">
+    delete from t_blogger
+     where id in (
+     <foreach collection="array" item="id" separator=",">
+     #{id}
+     </foreach>
+    )
+  </delete>
+</mapper>
