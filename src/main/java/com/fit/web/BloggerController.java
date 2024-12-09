@@ -35,18 +35,20 @@ public class BloggerController extends BaseController {
      */
     @RequestMapping({"/login", "/login.do", "/login.html"})
     public String login(TBlogger blogger, HttpServletRequest request) {
-        try {
-            UsernamePasswordToken token = new UsernamePasswordToken(blogger.getUsername(),
-                    new Md5Hash(blogger.getPassword(), "java1234").toString());
-            Subject subject = SecurityUtils.getSubject();
-            subject.login(token); // 登录验证
-            return "redirect:/admin/main.jsp";
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("blogger", blogger);
-            request.setAttribute("errorInfo", "用户名或密码错误！");
-            return "login";
+        if (blogger.getUsername() != null) {
+            try {
+                UsernamePasswordToken token = new UsernamePasswordToken(blogger.getUsername(),
+                        new Md5Hash(blogger.getPassword(), "java1234").toString());
+                Subject subject = SecurityUtils.getSubject();
+                subject.login(token); // 登录验证
+                return "/admin/main";
+            } catch (Exception e) {
+                e.printStackTrace();
+                request.setAttribute("blogger", blogger);
+                request.setAttribute("errorInfo", "用户名或密码错误！");
+            }
         }
+        return "login";
     }
 
     /**

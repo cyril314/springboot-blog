@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Java开源博客系统后台登录页面-Powered by java1234</title>
-<script src="${pageContext.request.contextPath}/static/bootstrap3/js/jquery-1.11.2.min.js"></script>
+<script src="${ctx}/static/bootstrap3/js/jquery-1.11.2.min.js"></script>
 <STYLE>
 body{
 	background: #ebebeb;
@@ -37,7 +39,7 @@ body{
 	box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
 }
 .u_logo{
-	background: url("${pageContext.request.contextPath}/static/images/username.png") no-repeat;
+	background: url("${ctx}/static/images/username.png") no-repeat;
 	padding: 10px 10px;
 	position: absolute;
 	top: 43px;
@@ -45,7 +47,7 @@ body{
 
 }
 .p_logo{
-	background: url("${pageContext.request.contextPath}/static/images/password.png") no-repeat;
+	background: url("${ctx}/static/images/password.png") no-repeat;
 	padding: 10px 10px;
 	position: absolute;
 	top: 12px;
@@ -55,7 +57,7 @@ a{
 	text-decoration: none;
 }
 .tou{
-	background: url("${pageContext.request.contextPath}/static/images/tou.png") no-repeat;
+	background: url("${ctx}/static/images/tou.png") no-repeat;
 	width: 97px;
 	height: 92px;
 	position: absolute;
@@ -63,7 +65,7 @@ a{
 	left: 140px;
 }
 .left_hand{
-	background: url("${pageContext.request.contextPath}/static/images/left_hand.png") no-repeat;
+	background: url("${ctx}/static/images/left_hand.png") no-repeat;
 	width: 32px;
 	height: 37px;
 	position: absolute;
@@ -71,7 +73,7 @@ a{
 	left: 150px;
 }
 .right_hand{
-	background: url("${pageContext.request.contextPath}/static/images/right_hand.png") no-repeat;
+	background: url("${ctx}/static/images/right_hand.png") no-repeat;
 	width: 32px;
 	height: 37px;
 	position: absolute;
@@ -79,7 +81,7 @@ a{
 	right: -64px;
 }
 .initial_left_hand{
-	background: url("${pageContext.request.contextPath}/static/images/hand.png") no-repeat;
+	background: url("${ctx}/static/images/hand.png") no-repeat;
 	width: 30px;
 	height: 20px;
 	position: absolute;
@@ -87,7 +89,7 @@ a{
 	left: 100px;
 }
 .initial_right_hand{
-	background: url("${pageContext.request.contextPath}/static/images/hand.png") no-repeat;
+	background: url("${ctx}/static/images/hand.png") no-repeat;
 	width: 30px;
 	height: 20px;
 	position: absolute;
@@ -95,7 +97,7 @@ a{
 	right: -112px;
 }
 .left_handing{
-	background: url("${pageContext.request.contextPath}/static/images/left-handing.png") no-repeat;
+	background: url("${ctx}/static/images/left-handing.png") no-repeat;
 	width: 30px;
 	height: 20px;
 	position: absolute;
@@ -103,7 +105,7 @@ a{
 	left: 139px;
 }
 .right_handinging{
-	background: url("${pageContext.request.contextPath}/static/images/right_handing.png") no-repeat;
+	background: url("${ctx}/static/images/right_handing.png") no-repeat;
 	width: 30px;
 	height: 20px;
 	position: absolute;
@@ -161,7 +163,7 @@ function checkForm(){
 <body>
 <DIV class="top_div">
 </DIV>
-<form action="${pageContext.request.contextPath}/blogger/login.do" method="post" onsubmit="return checkForm()">
+<form action="${ctx}/blogger/login.do" method="post" onsubmit="return checkForm()">
 	<DIV style="background: rgb(255, 255, 255); margin: -100px auto auto; border: 1px solid rgb(231, 231, 231); border-image: none; width: 400px; height: 200px; text-align: center;">
 		<DIV style="width: 165px; height: 96px; position: absolute;">
 			<DIV class="tou">

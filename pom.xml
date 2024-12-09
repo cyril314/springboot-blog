@@ -34,6 +34,7 @@
         <java.version>1.8</java.version>
         <shiro.version>1.4.0</shiro.version>
         <lucene.version>8.11.3</lucene.version>
+        <lib.path>${project.basedir}/lib</lib.path>
     </properties>
     <dependencies>
         <dependency>
@@ -188,6 +189,18 @@
             <artifactId>jsoup</artifactId>
             <version>1.8.3</version>
         </dependency>
+        <dependency>
+            <groupId>com.baidu.ueditor</groupId>
+            <artifactId>ueditor</artifactId>
+            <version>1.1.2</version>
+            <scope>system</scope>
+            <systemPath>${lib.path}/ueditor-1.1.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20180130</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>${project.artifactId}</finalName>
@@ -229,8 +242,8 @@
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
-                <filtering>true</filtering>
                 <targetPath>META-INF/resources</targetPath>
+                <filtering>true</filtering>
                 <includes>
                     <include>**/*.*</include>
                 </includes>
@@ -264,26 +277,6 @@
             <properties>
                 <profiles.active>pro</profiles.active>
             </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.3.2</version>
-                        <configuration>
-                            <excludePackageNames>*.spi</excludePackageNames>
-                        </configuration>
-                    </plugin>
-                </plugins>
-                <resources>
-                    <resource>
-                        <directory>src/main/resources</directory>
-                        <excludes>
-                            <exclude>META-INF/services/sun.net.spi.nameservice.NameServiceDescriptor</exclude>
-                        </excludes>
-                    </resource>
-                </resources>
-            </build>
         </profile>
     </profiles>
 </project>

@@ -29,8 +29,10 @@ spring:
       max-request-size: 500MB
   web:
     resources:
-      static-locations: [ classpath:/assets/,classpath:/static/ ]
+      static-locations: classpath:/assets/,classpath:/static/
+      add-mappings: true
   mvc:
+    static-path-pattern: /**
     view:
       prefix: /views/
       suffix: .jsp

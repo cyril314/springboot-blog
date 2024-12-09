@@ -14,7 +14,6 @@ import com.fit.util.DateUtils;
 import com.fit.util.FastJsonUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
-import org.apache.tomcat.util.http.ResponseUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,8 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 管理员博主Controller层
- *
- * @author Administrator
  */
 @Controller
 @RequestMapping("/admin/blogger")
@@ -39,12 +36,10 @@ public class BloggerAdminController extends BaseController {
      * @param blogger
      * @param request
      * @param response
-     * @return
-     * @throws Exception
      */
     @RequestMapping("/save")
-    public String save(@RequestParam("imageFile") MultipartFile imageFile, TBlogger blogger, HttpServletRequest request,
-                       HttpServletResponse response) throws Exception {
+    public void save(@RequestParam("imageFile") MultipartFile imageFile, TBlogger blogger, HttpServletRequest request,
+                     HttpServletResponse response) throws Exception {
         if (!imageFile.isEmpty()) {
             String filePath = request.getServletContext().getRealPath("/");
             String imageName = DateUtils.getOrderNum() + "." + imageFile.getOriginalFilename().split("\\.")[1];
@@ -59,18 +54,13 @@ public class BloggerAdminController extends BaseController {
             result.append("<script language='javascript'>alert('修改失败！');</script>");
         }
         writeJson(response, result);
-        return null;
     }
 
     /**
      * 查询博主信息
-     *
-     * @param response
-     * @return
-     * @throws Exception
      */
-    @RequestMapping("/find")
-    public String find(HttpServletResponse response) throws Exception {
+    @RequestMapping({"/find", "/find.do"})
+    public String find(HttpServletResponse response) {
         TBlogger blogger = bloggerService.get(1);
         writeJson(response, FastJsonUtil.toJSONString(blogger));
         return null;
@@ -81,11 +71,9 @@ public class BloggerAdminController extends BaseController {
      *
      * @param newPassword
      * @param response
-     * @return
-     * @throws Exception
      */
     @RequestMapping("/modifyPassword")
-    public String modifyPassword(String newPassword, HttpServletResponse response) throws Exception {
+    public String modifyPassword(String newPassword, HttpServletResponse response) {
         TBlogger blogger = new TBlogger();
         blogger.setPassword(new Md5Hash(newPassword, "java1234").toString());
         int resultTotal = bloggerService.update(blogger);
@@ -101,12 +89,9 @@ public class BloggerAdminController extends BaseController {
 
     /**
      * 注销
-     *
-     * @return
-     * @throws Exception
      */
     @RequestMapping("/logout")
-    public String logout() throws Exception {
+    public String logout() {
         SecurityUtils.getSubject().logout();
         return "redirect:/login.jsp";
     }

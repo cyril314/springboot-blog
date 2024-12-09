@@ -10,17 +10,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.NoHandlerFoundException;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.AccessDeniedException;
 import java.util.Collections;
 import java.util.List;
 
@@ -46,11 +41,14 @@ public class WebConfig extends WebMvcConfigurationSupport {
     }
 
     @Override
+    public void configurePathMatch(PathMatchConfigurer configurer) {
+        configurer.setUseSuffixPatternMatch(true);
+    }
+
+    @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+        InternalResourceViewResolver resolver = new InternalResourceViewResolver(prefix, suffix);
         resolver.setCache(true);
-        resolver.setPrefix(prefix);
-        resolver.setSuffix(suffix);
         resolver.setExposeContextBeansAsAttributes(true);
         resolver.setContentType("text/html;charset=UTF-8");
         registry.viewResolver(resolver);

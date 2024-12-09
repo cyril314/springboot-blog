@@ -2,7 +2,8 @@
 SQLyog Ultimate v11.33 (64 bit)
 MySQL - 5.1.49-community : Database - db_blog2
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -56,7 +57,7 @@ CREATE TABLE `t_blogger` (
 
 /*Data for the table `t_blogger` */
 
-insert  into `t_blogger`(`id`,`userName`,`password`,`profile`,`nickName`,`sign`,`imageName`) values (1,'java1234','70f57208b804bd90d51fdac84afe6472','<p>Java1234_小锋(QQ:527085608)，毕业于江苏师范大学计算机系；</p><p><img src=\"http://img.baidu.com/hi/jx2/j_0009.gif\"/>&nbsp;穷屌出身，发奋图强；2</p><p>&nbsp;</p><p><img src=\"http://img.baidu.com/hi/jx2/j_0003.gif\"/> 始终坚信 “知识改变命运，技术改变世界”</p><p><br/></p><p><img src=\"http://img.baidu.com/hi/jx2/j_0007.gif\"/><img src=\"http://img.baidu.com/hi/jx2/j_0007.gif\"/>dsdsdsds</p>','Java1234_小锋','知识改变命运，技术改变世界','20160202043951.jpg');
+insert  into `t_blogger`(`id`,`userName`,`password`,`profile`,`nickName`,`sign`,`imageName`) values (1,'admin', '70f57208b804bd90d51fdac84afe6472','<p>Java1234_小锋(QQ:527085608)，毕业于江苏师范大学计算机系；</p><p><img src=\"http://img.baidu.com/hi/jx2/j_0009.gif\"/>&nbsp;穷屌出身，发奋图强；2</p><p>&nbsp;</p><p><img src=\"http://img.baidu.com/hi/jx2/j_0003.gif\"/> 始终坚信 “知识改变命运，技术改变世界”</p><p><br/></p><p><img src=\"http://img.baidu.com/hi/jx2/j_0007.gif\"/><img src=\"http://img.baidu.com/hi/jx2/j_0007.gif\"/>dsdsdsds</p>','Java1234_小锋','知识改变命运，技术改变世界','20160202043951.jpg');
 
 /*Table structure for table `t_blogtype` */
 

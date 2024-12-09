@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script type="text/javascript">
 	function checkData(){
 		var q=document.getElementById("q").value.trim();
@@ -23,7 +22,7 @@
 		        <span class="icon-bar"></span>
 		        <span class="icon-bar"></span>
 		      </button>
-		      <a class="navbar-brand" href="${pageContext.request.contextPath}/index.html"><font color="black"><strong>首页</strong></font></a>
+		      <a class="navbar-brand" href="${ctx}/index.html"><font color="black"><strong>首页</strong></font></a>
 		    </div>
 
 		    <!-- Collect the nav links, forms, and other content for toggling -->
@@ -32,10 +31,10 @@
 		        <!-- <li><a href="#"><font color="black"><strong>Java1234官网</strong></font></a></li> -->
 		        <!-- <li><a href="#"><font color="black"><strong>Java学习路线图</strong></font></a></li> -->
 		        <!-- <li><a href="#"><font color="red"><strong>Java1234 VIP项目</strong></font></a></li> -->
-		        <li><a href="${pageContext.request.contextPath}/blogger/aboutMe.html"><font color="black"><strong>关于博主</strong></font></a></li>
-		        <li><a href="${pageContext.request.contextPath}/download.html"><font color="black"><strong>本站源码下载</strong></font></a></li>
+		        <li><a href="${ctx}/blogger/aboutMe.html"><font color="black"><strong>关于博主</strong></font></a></li>
+		        <li><a href="${ctx}/download.html"><font color="black"><strong>本站源码下载</strong></font></a></li>
 		      </ul>
-		      <form action="${pageContext.request.contextPath}/blog/q.html" class="navbar-form navbar-right" role="search" method="post" onsubmit="return checkData()">
+		      <form action="${ctx}/blog/q.html" class="navbar-form navbar-right" role="search" method="post" onsubmit="return checkData()">
 		        <div class="form-group" >
 		          <input type="text" id="q" name="q" value="${q }" class="form-control" placeholder="请输入要查询的关键字...">
 		        </div>

@@ -2,36 +2,32 @@
  * Created by JetBrains PhpStorm.
  * User: taoqili
  * Date: 12-2-20
- * Time: ÉÏÎç11:19
+ * Time: ä¸Šåˆ11:19
  * To change this template use File | Settings | File Templates.
  */
+(function () {
 
-(function(){
+    var video = {}, uploadVideoList = [], isModifyUploadVideo = false, uploadFile;
 
-    var video = {},
-        uploadVideoList = [],
-        isModifyUploadVideo = false,
-        uploadFile;
-
-    window.onload = function(){
+    window.onload = function () {
         $focus($G("videoUrl"));
         initTabs();
         initVideo();
         initUpload();
     };
 
-    /* ³õÊ¼»¯tab±êÇ© */
-    function initTabs(){
+    /* åˆå§‹åŒ–tabæ ‡ç­¾ */
+    function initTabs() {
         var tabs = $G('tabHeads').children;
         for (var i = 0; i < tabs.length; i++) {
             domUtils.on(tabs[i], "click", function (e) {
                 var j, bodyId, target = e.target || e.srcElement;
                 for (j = 0; j < tabs.length; j++) {
                     bodyId = tabs[j].getAttribute('data-content-id');
-                    if(tabs[j] == target){
+                    if (tabs[j] == target) {
                         domUtils.addClass(tabs[j], 'focus');
                         domUtils.addClass($G(bodyId), 'focus');
-                    }else {
+                    } else {
                         domUtils.removeClasses(tabs[j], 'focus');
                         domUtils.removeClasses($G(bodyId), 'focus');
                     }
@@ -40,26 +36,25 @@
         }
     }
 
-    function initVideo(){
-        createAlignButton( ["videoFloat", "upload_alignment"] );
+    function initVideo() {
+        createAlignButton(["videoFloat", "upload_alignment"]);
         addUrlChangeListener($G("videoUrl"));
         addOkListener();
-
-        //±à¼­ÊÓÆµÊ±³õÊ¼»¯Ïà¹ØĞÅÏ¢
-        (function(){
-            var img = editor.selection.getRange().getClosedNode(),url;
-            if(img && img.className){
+        //ç¼–è¾‘è§†é¢‘æ—¶åˆå§‹åŒ–ç›¸å…³ä¿¡æ¯
+        (function () {
+            var img = editor.selection.getRange().getClosedNode(), url;
+            if (img && img.className) {
                 var hasFakedClass = (img.className == "edui-faked-video"),
-                    hasUploadClass = img.className.indexOf("edui-upload-video")!=-1;
-                if(hasFakedClass || hasUploadClass) {
+                    hasUploadClass = img.className.indexOf("edui-upload-video") != -1;
+                if (hasFakedClass || hasUploadClass) {
                     $G("videoUrl").value = url = img.getAttribute("_url");
                     $G("videoWidth").value = img.width;
                     $G("videoHeight").value = img.height;
-                    var align = domUtils.getComputedStyle(img,"float"),
-                        parentAlign = domUtils.getComputedStyle(img.parentNode,"text-align");
-                    updateAlignButton(parentAlign==="center"?"center":align);
+                    var align = domUtils.getComputedStyle(img, "float"),
+                        parentAlign = domUtils.getComputedStyle(img.parentNode, "text-align");
+                    updateAlignButton(parentAlign === "center" ? "center" : align);
                 }
-                if(hasUploadClass) {
+                if (hasUploadClass) {
                     isModifyUploadVideo = true;
                 }
             }
@@ -68,13 +63,13 @@
     }
 
     /**
-     * ¼àÌıÈ·ÈÏºÍÈ¡ÏûÁ½¸ö°´Å¥ÊÂ¼ş£¬ÓÃ»§Ö´ĞĞ²åÈë»òÕßÇå¿ÕÕıÔÚ²¥·ÅµÄÊÓÆµÊµÀı²Ù×÷
+     * ç›‘å¬ç¡®è®¤å’Œå–æ¶ˆä¸¤ä¸ªæŒ‰é’®äº‹ä»¶ï¼Œç”¨æˆ·æ‰§è¡Œæ’å…¥æˆ–è€…æ¸…ç©ºæ­£åœ¨æ’­æ”¾çš„è§†é¢‘å®ä¾‹æ“ä½œ
      */
-    function addOkListener(){
-        dialog.onok = function(){
+    function addOkListener() {
+        dialog.onok = function () {
             $G("preview").innerHTML = "";
-            var currentTab =  findFocus("tabHeads","tabSrc");
-            switch(currentTab){
+            var currentTab = findFocus("tabHeads", "tabSrc");
+            switch (currentTab) {
                 case "video":
                     return insertSingle();
                     break;
@@ -86,24 +81,24 @@
                     break;
             }
         };
-        dialog.oncancel = function(){
+        dialog.oncancel = function () {
             $G("preview").innerHTML = "";
         };
     }
 
     /**
-     * ÒÀ¾İ´«ÈëµÄalignÖµ¸üĞÂ°´Å¥ĞÅÏ¢
+     * ä¾æ®ä¼ å…¥çš„alignå€¼æ›´æ–°æŒ‰é’®ä¿¡æ¯
      * @param align
      */
-    function updateAlignButton( align ) {
-        var aligns = $G( "videoFloat" ).children;
-        for ( var i = 0, ci; ci = aligns[i++]; ) {
-            if ( ci.getAttribute( "name" ) == align ) {
-                if ( ci.className !="focus" ) {
+    function updateAlignButton(align) {
+        var aligns = $G("videoFloat").children;
+        for (var i = 0, ci; ci = aligns[i++];) {
+            if (ci.getAttribute("name") == align) {
+                if (ci.className != "focus") {
                     ci.className = "focus";
                 }
             } else {
-                if ( ci.className =="focus" ) {
+                if (ci.className == "focus") {
                     ci.className = "";
                 }
             }
@@ -111,61 +106,60 @@
     }
 
     /**
-     * ½«µ¥¸öÊÓÆµĞÅÏ¢²åÈë±à¼­Æ÷ÖĞ
+     * å°†å•ä¸ªè§†é¢‘ä¿¡æ¯æ’å…¥ç¼–è¾‘å™¨ä¸­
      */
-    function insertSingle(){
-        var width = $G("videoWidth"),
-            height = $G("videoHeight"),
-            url=$G('videoUrl').value,
-            align = findFocus("videoFloat","name");
-        if(!url) return false;
-        if ( !checkNum( [width, height] ) ) return false;
+    function insertSingle() {
+        var width = $G("videoWidth"), height = $G("videoHeight"), url = $G('videoUrl').value,
+            align = findFocus("videoFloat", "name");
+        if (!url) return false;
+        if (!checkNum([width, height])) return false;
         editor.execCommand('insertvideo', {
             url: convert_url(url),
             width: width.value,
             height: height.value,
             align: align
-        }, isModifyUploadVideo ? 'upload':null);
+        }, isModifyUploadVideo ? 'upload' : null);
     }
 
     /**
-     * ½«ÔªËØidÏÂµÄËùÓĞ´ú±íÊÓÆµµÄÍ¼Æ¬²åÈë±à¼­Æ÷ÖĞ
+     * å°†å…ƒç´ idä¸‹çš„æ‰€æœ‰ä»£è¡¨è§†é¢‘çš„å›¾ç‰‡æ’å…¥ç¼–è¾‘å™¨ä¸­
      * @param id
      */
-    function insertSearch(id){
-        var imgs = domUtils.getElementsByTagName($G(id),"img"),
-            videoObjs=[];
-        for(var i=0,img; img=imgs[i++];){
-            if(img.getAttribute("selected")){
+    function insertSearch(id) {
+        var imgs = domUtils.getElementsByTagName($G(id), "img"),
+            videoObjs = [];
+        for (var i = 0, img; img = imgs[i++];) {
+            if (img.getAttribute("selected")) {
                 videoObjs.push({
-                    url:img.getAttribute("ue_video_url"),
-                    width:420,
-                    height:280,
-                    align:"none"
+                    url: img.getAttribute("ue_video_url"),
+                    width: 420,
+                    height: 280,
+                    align: "none"
                 });
             }
         }
-        editor.execCommand('insertvideo',videoObjs);
+        editor.execCommand('insertvideo', videoObjs);
     }
 
     /**
-     * ÕÒµ½idÏÂ¾ßÓĞfocusÀàµÄ½Úµã²¢·µ»Ø¸Ã½ÚµãÏÂµÄÄ³¸öÊôĞÔ
+     * æ‰¾åˆ°idä¸‹å…·æœ‰focusç±»çš„èŠ‚ç‚¹å¹¶è¿”å›è¯¥èŠ‚ç‚¹ä¸‹çš„æŸä¸ªå±æ€§
      * @param id
      * @param returnProperty
      */
-    function findFocus( id, returnProperty ) {
-        var tabs = $G( id ).children,
-                property;
-        for ( var i = 0, ci; ci = tabs[i++]; ) {
-            if ( ci.className=="focus" ) {
-                property = ci.getAttribute( returnProperty );
+    function findFocus(id, returnProperty) {
+        var tabs = $G(id).children,
+            property;
+        for (var i = 0, ci; ci = tabs[i++];) {
+            if (ci.className == "focus") {
+                property = ci.getAttribute(returnProperty);
                 break;
             }
         }
         return property;
     }
-    function convert_url(url){
-        if ( !url ) return '';
+
+    function convert_url(url) {
+        if (!url) return '';
         url = utils.trim(url)
             .replace(/v\.youku\.com\/v_show\/id_([\w\-=]+)\.html/i, 'player.youku.com/player.php/sid/$1/v.swf')
             .replace(/(www\.)?youtube\.com\/watch\?v=([\w\-]+)/i, "www.youtube.com/v/$2")
@@ -184,139 +178,140 @@
     }
 
     /**
-      * ¼ì²â´«ÈëµÄËùÓĞinput¿òÖĞÊäÈëµÄ³¤¿íÊÇ·ñÊÇÕıÊı
-      * @param nodes input¿ò¼¯ºÏ£¬
-      */
-     function checkNum( nodes ) {
-         for ( var i = 0, ci; ci = nodes[i++]; ) {
-             var value = ci.value;
-             if ( !isNumber( value ) && value) {
-                 alert( lang.numError );
-                 ci.value = "";
-                 ci.focus();
-                 return false;
-             }
-         }
-         return true;
-     }
+     * æ£€æµ‹ä¼ å…¥çš„æ‰€æœ‰inputæ¡†ä¸­è¾“å…¥çš„é•¿å®½æ˜¯å¦æ˜¯æ­£æ•°
+     * @param nodes inputæ¡†é›†åˆï¼Œ
+     */
+    function checkNum(nodes) {
+        for (var i = 0, ci; ci = nodes[i++];) {
+            var value = ci.value;
+            if (!isNumber(value) && value) {
+                alert(lang.numError);
+                ci.value = "";
+                ci.focus();
+                return false;
+            }
+        }
+        return true;
+    }
 
     /**
-     * Êı×ÖÅĞ¶Ï
+     * æ•°å­—åˆ¤æ–­
      * @param value
      */
-    function isNumber( value ) {
-        return /(0|^[1-9]\d*$)/.test( value );
+    function isNumber(value) {
+        return /(0|^[1-9]\d*$)/.test(value);
     }
 
     /**
-      * ´´½¨Í¼Æ¬¸¡¶¯Ñ¡Ôñ°´Å¥
-      * @param ids
-      */
-     function createAlignButton( ids ) {
-         for ( var i = 0, ci; ci = ids[i++]; ) {
-             var floatContainer = $G( ci ),
-                     nameMaps = {"none":lang['default'], "left":lang.floatLeft, "right":lang.floatRight, "center":lang.block};
-             for ( var j in nameMaps ) {
-                 var div = document.createElement( "div" );
-                 div.setAttribute( "name", j );
-                 if ( j == "none" ) div.className="focus";
-                 div.style.cssText = "background:url(images/" + j + "_focus.jpg);";
-                 div.setAttribute( "title", nameMaps[j] );
-                 floatContainer.appendChild( div );
-             }
-             switchSelect( ci );
-         }
-     }
+     * åˆ›å»ºå›¾ç‰‡æµ®åŠ¨é€‰æ‹©æŒ‰é’®
+     * @param ids
+     */
+    function createAlignButton(ids) {
+        for (var i = 0, ci; ci = ids[i++];) {
+            var floatContainer = $G(ci),
+                nameMaps = {"none": lang['default'], "left": lang.floatLeft, "right": lang.floatRight, "center": lang.block};
+            for (var j in nameMaps) {
+                var div = document.createElement("div");
+                div.setAttribute("name", j);
+                if (j == "none") div.className = "focus";
+                div.style.cssText = "background:url(images/" + j + "_focus.jpg);";
+                div.setAttribute("title", nameMaps[j]);
+                floatContainer.appendChild(div);
+            }
+            switchSelect(ci);
+        }
+    }
 
     /**
-     * Ñ¡ÔñÇĞ»»
+     * é€‰æ‹©åˆ‡æ¢
      * @param selectParentId
      */
-    function switchSelect( selectParentId ) {
-        var selects = $G( selectParentId ).children;
-        for ( var i = 0, ci; ci = selects[i++]; ) {
-            domUtils.on( ci, "click", function () {
-                for ( var j = 0, cj; cj = selects[j++]; ) {
+    function switchSelect(selectParentId) {
+        var selects = $G(selectParentId).children;
+        for (var i = 0, ci; ci = selects[i++];) {
+            domUtils.on(ci, "click", function () {
+                for (var j = 0, cj; cj = selects[j++];) {
                     cj.className = "";
-                    cj.removeAttribute && cj.removeAttribute( "class" );
+                    cj.removeAttribute && cj.removeAttribute("class");
                 }
                 this.className = "focus";
-            } )
+            })
         }
     }
 
     /**
-     * ¼àÌıurl¸Ä±äÊÂ¼ş
+     * ç›‘å¬urlæ”¹å˜äº‹ä»¶
      * @param url
      */
-    function addUrlChangeListener(url){
+    function addUrlChangeListener(url) {
         if (browser.ie) {
             url.onpropertychange = function () {
-                createPreviewVideo( this.value );
+                createPreviewVideo(this.value);
             }
         } else {
-            url.addEventListener( "input", function () {
-                createPreviewVideo( this.value );
-            }, false );
+            url.addEventListener("input", function () {
+                createPreviewVideo(this.value);
+            }, false);
         }
     }
 
     /**
-     * ¸ù¾İurlÉú³ÉÊÓÆµÔ¤ÀÀ
+     * æ ¹æ®urlç”Ÿæˆè§†é¢‘é¢„è§ˆ
      * @param url
      */
-    function createPreviewVideo(url){
-        if ( !url )return;
+    function createPreviewVideo(url) {
+        if (!url) return;
 
         var conUrl = convert_url(url);
 
-        $G("preview").innerHTML = '<div class="previewMsg"><span>'+lang.urlError+'</span></div>'+
-        '<embed class="previewVideo" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
+        $G("preview").innerHTML = '<div class="previewMsg"><span>' + lang.urlError + '</span></div>' +
+            '<embed class="previewVideo" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
             ' src="' + conUrl + '"' +
-            ' width="' + 420  + '"' +
-            ' height="' + 280  + '"' +
+            ' width="' + 420 + '"' +
+            ' height="' + 280 + '"' +
             ' wmode="transparent" play="true" loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" >' +
-        '</embed>';
+            '</embed>';
     }
 
 
-    /* ²åÈëÉÏ´«ÊÓÆµ */
-    function insertUpload(){
-        var videoObjs=[],
+    /* æ’å…¥ä¸Šä¼ è§†é¢‘ */
+    function insertUpload() {
+        var videoObjs = [],
             uploadDir = editor.getOpt('videoUrlPrefix'),
             width = $G('upload_width').value || 420,
             height = $G('upload_height').value || 280,
-            align = findFocus("upload_alignment","name") || 'none';
-        for(var key in uploadVideoList) {
+            align = findFocus("upload_alignment", "name") || 'none';
+        for (var key in uploadVideoList) {
             var file = uploadVideoList[key];
             videoObjs.push({
                 url: uploadDir + file.url,
-                width:width,
-                height:height,
-                align:align
+                width: width,
+                height: height,
+                align: align
             });
         }
 
         var count = uploadFile.getQueueCount();
         if (count) {
-            $('.info', '#queueList').html('<span style="color:red;">' + '»¹ÓĞ2¸öÎ´ÉÏ´«ÎÄ¼ş'.replace(/[\d]/, count) + '</span>');
+            $('.info', '#queueList').html('<span style="color:red;">' + 'è¿˜æœ‰2ä¸ªæœªä¸Šä¼ æ–‡ä»¶'.replace(/[\d]/, count) + '</span>');
             return false;
         } else {
             editor.execCommand('insertvideo', videoObjs, 'upload');
         }
     }
 
-    /*³õÊ¼»¯ÉÏ´«±êÇ©*/
-    function initUpload(){
+    /*åˆå§‹åŒ–ä¸Šä¼ æ ‡ç­¾*/
+    function initUpload() {
         uploadFile = new UploadFile('queueList');
     }
 
 
-    /* ÉÏ´«¸½¼ş */
+    /* ä¸Šä¼ é™„ä»¶ */
     function UploadFile(target) {
         this.$wrap = target.constructor == String ? $('#' + target) : $(target);
         this.init();
     }
+
     UploadFile.prototype = {
         init: function () {
             this.fileList = [];
@@ -326,39 +321,39 @@
         initContainer: function () {
             this.$queue = this.$wrap.find('.filelist');
         },
-        /* ³õÊ¼»¯ÈİÆ÷ */
+        /* åˆå§‹åŒ–å®¹å™¨ */
         initUploader: function () {
             var _this = this,
                 $ = jQuery,    // just in case. Make sure it's not an other libaray.
                 $wrap = _this.$wrap,
-            // Í¼Æ¬ÈİÆ÷
+                // å›¾ç‰‡å®¹å™¨
                 $queue = $wrap.find('.filelist'),
-            // ×´Ì¬À¸£¬°üÀ¨½ø¶ÈºÍ¿ØÖÆ°´Å¥
+                // çŠ¶æ€æ ï¼ŒåŒ…æ‹¬è¿›åº¦å’Œæ§åˆ¶æŒ‰é’®
                 $statusBar = $wrap.find('.statusBar'),
-            // ÎÄ¼ş×ÜÌåÑ¡ÔñĞÅÏ¢¡£
+                // æ–‡ä»¶æ€»ä½“é€‰æ‹©ä¿¡æ¯ã€‚
                 $info = $statusBar.find('.info'),
-            // ÉÏ´«°´Å¥
+                // ä¸Šä¼ æŒ‰é’®
                 $upload = $wrap.find('.uploadBtn'),
-            // ÉÏ´«°´Å¥
+                // ä¸Šä¼ æŒ‰é’®
                 $filePickerBtn = $wrap.find('.filePickerBtn'),
-            // ÉÏ´«°´Å¥
+                // ä¸Šä¼ æŒ‰é’®
                 $filePickerBlock = $wrap.find('.filePickerBlock'),
-            // Ã»Ñ¡ÔñÎÄ¼şÖ®Ç°µÄÄÚÈİ¡£
+                // æ²¡é€‰æ‹©æ–‡ä»¶ä¹‹å‰çš„å†…å®¹ã€‚
                 $placeHolder = $wrap.find('.placeholder'),
-            // ×ÜÌå½ø¶ÈÌõ
+                // æ€»ä½“è¿›åº¦æ¡
                 $progress = $statusBar.find('.progress').hide(),
-            // Ìí¼ÓµÄÎÄ¼şÊıÁ¿
+                // æ·»åŠ çš„æ–‡ä»¶æ•°é‡
                 fileCount = 0,
-            // Ìí¼ÓµÄÎÄ¼ş×Ü´óĞ¡
+                // æ·»åŠ çš„æ–‡ä»¶æ€»å¤§å°
                 fileSize = 0,
-            // ÓÅ»¯retina, ÔÚretinaÏÂÕâ¸öÖµÊÇ2
+                // ä¼˜åŒ–retina, åœ¨retinaä¸‹è¿™ä¸ªå€¼æ˜¯2
                 ratio = window.devicePixelRatio || 1,
-            // ËõÂÔÍ¼´óĞ¡
+                // ç¼©ç•¥å›¾å¤§å°
                 thumbnailWidth = 113 * ratio,
                 thumbnailHeight = 113 * ratio,
-            // ¿ÉÄÜÓĞpedding, ready, uploading, confirm, done.
+                // å¯èƒ½æœ‰pedding, ready, uploading, confirm, done.
                 state = '',
-            // ËùÓĞÎÄ¼şµÄ½ø¶ÈĞÅÏ¢£¬keyÎªfile id
+                // æ‰€æœ‰æ–‡ä»¶çš„è¿›åº¦ä¿¡æ¯ï¼Œkeyä¸ºfile id
                 percentages = {},
                 supportTransition = (function () {
                     var s = document.createElement('p').style,
@@ -370,11 +365,12 @@
                     s = null;
                     return r;
                 })(),
-            // WebUploaderÊµÀı
+                // WebUploaderå®ä¾‹
                 uploader,
                 actionUrl = editor.getActionUrl(editor.getOpt('videoActionName')),
                 fileMaxSize = editor.getOpt('videoMaxSize'),
-                acceptExtensions = (editor.getOpt('videoAllowFiles') || []).join('').replace(/\./g, ',').replace(/^[,]/, '');;
+                acceptExtensions = (editor.getOpt('videoAllowFiles') || []).join('').replace(/\./g, ',').replace(/^[,]/, '');
+            ;
 
             if (!WebUploader.Uploader.support()) {
                 $('#filePickerReady').after($('<div>').html(lang.errorNotSupport)).hide();
@@ -406,7 +402,7 @@
 
             setState('pedding');
 
-            // µ±ÓĞÎÄ¼şÌí¼Ó½øÀ´Ê±Ö´ĞĞ£¬¸ºÔğviewµÄ´´½¨
+            // å½“æœ‰æ–‡ä»¶æ·»åŠ è¿›æ¥æ—¶æ‰§è¡Œï¼Œè´Ÿè´£viewçš„åˆ›å»º
             function addFile(file) {
                 var $li = $('<li id="' + file.id + '">' +
                         '<p class="title">' + file.name + '</p>' +
@@ -447,7 +443,7 @@
                     showError(file.statusText);
                 } else {
                     $wrap.text(lang.uploadPreview);
-                    if ('|png|jpg|jpeg|bmp|gif|'.indexOf('|'+file.ext.toLowerCase()+'|') == -1) {
+                    if ('|png|jpg|jpeg|bmp|gif|'.indexOf('|' + file.ext.toLowerCase() + '|') == -1) {
                         $wrap.empty().addClass('notimage').append('<i class="file-preview file-type-' + file.ext.toLowerCase() + '"></i>' +
                             '<span class="file-title">' + file.name + '</span>');
                     } else {
@@ -467,10 +463,10 @@
                             }, thumbnailWidth, thumbnailHeight);
                         }
                     }
-                    percentages[ file.id ] = [ file.size, 0 ];
+                    percentages[file.id] = [file.size, 0];
                     file.rotation = 0;
 
-                    /* ¼ì²éÎÄ¼ş¸ñÊ½ */
+                    /* æ£€æŸ¥æ–‡ä»¶æ ¼å¼ */
                     if (!file.ext || acceptExtensions.indexOf(file.ext.toLowerCase()) == -1) {
                         showError('not_allow_type');
                         uploader.removeFile(file);
@@ -484,14 +480,14 @@
                         $li.off('mouseenter mouseleave');
                         $btns.remove();
                     }
-                    // ³É¹¦
+                    // æˆåŠŸ
                     if (cur === 'error' || cur === 'invalid') {
                         showError(file.statusText);
-                        percentages[ file.id ][ 1 ] = 1;
+                        percentages[file.id][1] = 1;
                     } else if (cur === 'interrupt') {
                         showError('interrupt');
                     } else if (cur === 'queued') {
-                        percentages[ file.id ][ 1 ] = 0;
+                        percentages[file.id][1] = 0;
                     } else if (cur === 'progress') {
                         $info.hide();
                         $prgress.css('display', 'block');
@@ -541,10 +537,10 @@
                 $li.insertBefore($filePickerBlock);
             }
 
-            // ¸ºÔğviewµÄÏú»Ù
+            // è´Ÿè´£viewçš„é”€æ¯
             function removeFile(file) {
                 var $li = $('#' + file.id);
-                delete percentages[ file.id ];
+                delete percentages[file.id];
                 updateTotalProgress();
                 $li.off().find('.file-panel').off().end().remove();
             }
@@ -556,8 +552,8 @@
                     percent;
 
                 $.each(percentages, function (k, v) {
-                    total += v[ 0 ];
-                    loaded += v[ 0 ] * v[ 1 ];
+                    total += v[0];
+                    loaded += v[0] * v[1];
                 });
 
                 percent = total ? loaded / total : 0;
@@ -578,39 +574,44 @@
 
                     switch (val) {
 
-                        /* Î´Ñ¡ÔñÎÄ¼ş */
+                        /* æœªé€‰æ‹©æ–‡ä»¶ */
                         case 'pedding':
                             $queue.addClass('element-invisible');
                             $statusBar.addClass('element-invisible');
                             $placeHolder.removeClass('element-invisible');
-                            $progress.hide(); $info.hide();
+                            $progress.hide();
+                            $info.hide();
                             uploader.refresh();
                             break;
 
-                        /* ¿ÉÒÔ¿ªÊ¼ÉÏ´« */
+                        /* å¯ä»¥å¼€å§‹ä¸Šä¼  */
                         case 'ready':
                             $placeHolder.addClass('element-invisible');
                             $queue.removeClass('element-invisible');
                             $statusBar.removeClass('element-invisible');
-                            $progress.hide(); $info.show();
+                            $progress.hide();
+                            $info.show();
                             $upload.text(lang.uploadStart);
                             uploader.refresh();
                             break;
 
-                        /* ÉÏ´«ÖĞ */
+                        /* ä¸Šä¼ ä¸­ */
                         case 'uploading':
-                            $progress.show(); $info.hide();
+                            $progress.show();
+                            $info.hide();
                             $upload.text(lang.uploadPause);
                             break;
 
-                        /* ÔİÍ£ÉÏ´« */
+                        /* æš‚åœä¸Šä¼  */
                         case 'paused':
-                            $progress.show(); $info.hide();
+                            $progress.show();
+                            $info.hide();
                             $upload.text(lang.uploadContinue);
                             break;
 
                         case 'confirm':
-                            $progress.show(); $info.hide();
+                            $progress.show();
+                            $info.hide();
                             $upload.text(lang.uploadStart);
 
                             stats = uploader.getStats();
@@ -621,7 +622,8 @@
                             break;
 
                         case 'finish':
-                            $progress.hide(); $info.show();
+                            $progress.hide();
+                            $info.show();
                             if (stats.uploadFailNum) {
                                 $upload.text(lang.uploadRetry);
                             } else {
@@ -655,9 +657,7 @@
                     }
                 } else {
                     stats = uploader.getStats();
-                    text = lang.updateStatusFinish.replace('_', fileCount).
-                        replace('_KB', WebUploader.formatSize(fileSize)).
-                        replace('_', stats.successNum);
+                    text = lang.updateStatusFinish.replace('_', fileCount).replace('_KB', WebUploader.formatSize(fileSize)).replace('_', stats.successNum);
 
                     if (stats.uploadFailNum) {
                         text += lang.updateStatusError.replace('_', stats.uploadFailNum);
@@ -700,9 +700,9 @@
                         setState('confirm', files);
                         break;
                     case 'startUpload':
-                        /* Ìí¼Ó¶îÍâµÄGET²ÎÊı */
+                        /* æ·»åŠ é¢å¤–çš„GETå‚æ•° */
                         var params = utils.serializeParam(editor.queryCommandValue('serverparam')) || '',
-                            url = utils.formatUrl(actionUrl + (actionUrl.indexOf('?') == -1 ? '?':'&') + 'encode=gbk&' + params);
+                            url = utils.formatUrl(actionUrl + (actionUrl.indexOf('?') == -1 ? '?' : '&') + 'encode=gbk&' + params);
                         uploader.option('server', url);
                         setState('uploading', files);
                         break;
@@ -713,7 +713,7 @@
             });
 
             uploader.on('uploadBeforeSend', function (file, data, header) {
-                //ÕâÀï¿ÉÒÔÍ¨¹ıdata¶ÔÏóÌí¼ÓPOST²ÎÊı
+                //è¿™é‡Œå¯ä»¥é€šè¿‡dataå¯¹è±¡æ·»åŠ POSTå‚æ•°
                 header['X_Requested_With'] = 'XMLHttpRequest';
             });
 
@@ -722,7 +722,7 @@
                     $percent = $li.find('.progress span');
 
                 $percent.css('width', percentage * 100 + '%');
-                percentages[ file.id ][ 1 ] = percentage;
+                percentages[file.id][1] = percentage;
                 updateTotalProgress();
             });
 
@@ -735,7 +735,7 @@
                         uploadVideoList.push({
                             'url': json.url,
                             'type': json.type,
-                            'original':json.original
+                            'original': json.original
                         });
                         $file.append('<span class="success"></span>');
                     } else {
@@ -775,13 +775,13 @@
         },
         getQueueCount: function () {
             var file, i, status, readyFile = 0, files = this.uploader.getFiles();
-            for (i = 0; file = files[i++]; ) {
+            for (i = 0; file = files[i++];) {
                 status = file.getStatus();
                 if (status == 'queued' || status == 'uploading' || status == 'progress') readyFile++;
             }
             return readyFile;
         },
-        refresh: function(){
+        refresh: function () {
             this.uploader.refresh();
         }
     };

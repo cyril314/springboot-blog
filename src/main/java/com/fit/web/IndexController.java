@@ -35,8 +35,7 @@ public class IndexController extends BaseController {
      * 请求主页
      */
     @RequestMapping({"/", "/index", "/index.html"})
-    public ModelAndView index(@RequestParam(value = "page", required = false) String page, @RequestParam(value = "typeId", required = false) String typeId,
-                              @RequestParam(value = "releaseDateStr", required = false) String releaseDateStr, HttpServletRequest request) throws Exception {
+    public ModelAndView index(String page, String typeId, String releaseDateStr, HttpServletRequest request) throws Exception {
         ModelAndView mav = new PatternAndView("mainTemp");
         if (isEmpty(page)) {
             page = "1";

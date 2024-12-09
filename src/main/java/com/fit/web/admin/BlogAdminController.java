@@ -20,8 +20,6 @@ import java.util.Map;
 
 /**
  * 管理员博客Controller层
- *
- * @author Administrator
  */
 @Controller
 @RequestMapping("/admin/blog")
